@@ -25,7 +25,7 @@ import { AuthModule } from './auth/auth.module';
         password: config.get<string>('DB_PASSWORD'), // password of database
         database: config.get<string>('DB_NAME'), // name of database
         autoLoadEntities: true, // auto load entities
-        synchronize: false, // synchronize database
+        synchronize: true, // synchronize database
       })
     }),
     AuthModule

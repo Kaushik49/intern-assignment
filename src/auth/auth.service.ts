@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from '../users/user.entity';
 import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
@@ -12,6 +13,7 @@ export class AuthService {
     // inject the users repository to the auth service
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    private jwtService: JwtService
   ) {}
 
   // register a new user
@@ -38,5 +40,22 @@ export class AuthService {
     const { passwordHash: _, ...result } = user;
     // return the user without the password hash
     return result;
+  }
+  // validate user by email and password
+
+  async validateUser(email: string, pass: string): Promise<any> {
+    const user = await this.usersRepository.findOne({ where: { email } });
+    if (user && (await bcrypt.compare(pass, user.passwordHash))) {
+      const { passwordHash, ...result } = user;
+      return result;
+    }
+    return null;
+  }
+
+  async login(user: any) {
+    const payload = { email: user.email, sub: user.id };
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
   }
 }
