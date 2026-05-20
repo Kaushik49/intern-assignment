@@ -18,13 +18,14 @@ export class AuthController {
     return this.authService.register(registerDto);
   }
 
-  // ... keep your @Post('register') method here ...
 
-  // local guards used from local-auth.gauard.ts  garuda
+
+  // local guards used from local-auth.gauard.ts 
   // it helps to validate the username and password 
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req) {
+    // executes the authservice login in authservice.ts
     return this.authService.login(req.user);
   }
 
@@ -34,6 +35,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@CurrentUser() user: any) {
+    // returns the user details verifying the jwt token 
     return user;
   }
 }
