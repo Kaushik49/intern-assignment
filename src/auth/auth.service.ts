@@ -42,7 +42,7 @@ export class AuthService {
     return result;
   }
   // validate user by email and password
-
+// executes when registering email and password
   async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.usersRepository.findOne({ where: { email } });
     if (user && (await bcrypt.compare(pass, user.passwordHash))) {
@@ -51,7 +51,7 @@ export class AuthService {
     }
     return null;
   }
-
+// executes when login route is hit 
   async login(user: any) {
     const payload = { email: user.email, sub: user.id };
     return {

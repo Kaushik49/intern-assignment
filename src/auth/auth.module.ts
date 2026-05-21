@@ -10,18 +10,20 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 
 
 @Module({
-  imports: [UsersModule, 
+  imports: [UsersModule,
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
+      // inject the config service to the jwt module
       useFactory: (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: configService.get<string>('JWT_EXPIRATION') },
+        // it basically tells the strategy from where to extract the JWT token from the incoming request
+        secret: configService.get<string>('JWT_SECRET')!,
+        signOptions: { expiresIn: configService.get<string>('JWT_EXPIRATION') as any },
       }),
     }),
   ], // imports the users module to the auth module
-  providers: [AuthService,LocalStrategy, JwtStrategy], // providers for the auth module
+  providers: [AuthService, LocalStrategy, JwtStrategy], // providers for the auth module
   controllers: [AuthController] // controllers for the auth module
 })
-export class AuthModule {}
+export class AuthModule { }
