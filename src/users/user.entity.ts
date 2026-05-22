@@ -1,5 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
-
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from 'typeorm';
+import { Workspace } from 'src/workspace/entities/workspace.entity';
+import { Project } from 'src/projects/project.entity';
+import { Task } from 'src/tasks/task.entity';
 // schema for users table
 @Entity('users')
 export class User {
@@ -18,4 +20,11 @@ export class User {
   // created at for users table
   @CreateDateColumn()
   createdAt: Date;
+
+  @OneToMany(() => Project, (p) => p.owner)
+  projects: Project[];
+
+  @OneToMany(() => Task, (t) => t.assignee)
+  tasks: Task[];
+  
 }
