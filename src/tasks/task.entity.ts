@@ -3,9 +3,11 @@ import {
   Entity, PrimaryGeneratedColumn, Column,
   CreateDateColumn, UpdateDateColumn,
   ManyToOne, JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { Project } from '../projects/project.entity';
 import { User } from '../users/user.entity';
+import { Comment } from '../comments/entities/comment.entity';
 
 export enum TaskStatus {
   PENDING = 'pending',
@@ -16,10 +18,10 @@ export enum TaskStatus {
 
 // Valid transitions — enforced in the service
 export const STATUS_TRANSITIONS: Record<TaskStatus, TaskStatus[]> = {
-  [TaskStatus.PENDING]:      [TaskStatus.IN_PROGRESS, TaskStatus.CANCELLED],
-  [TaskStatus.IN_PROGRESS]:  [TaskStatus.COMPLETED, TaskStatus.CANCELLED],
-  [TaskStatus.COMPLETED]:    [],
-  [TaskStatus.CANCELLED]:    [],
+  [TaskStatus.PENDING]: [TaskStatus.IN_PROGRESS, TaskStatus.CANCELLED],
+  [TaskStatus.IN_PROGRESS]: [TaskStatus.COMPLETED, TaskStatus.CANCELLED],
+  [TaskStatus.COMPLETED]: [],
+  [TaskStatus.CANCELLED]: [],
 };
 
 @Entity('tasks')
@@ -55,4 +57,7 @@ export class Task {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => Comment, (comment) => comment.task)
+  comments: Comment[];
 }

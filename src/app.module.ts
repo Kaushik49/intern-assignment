@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 // to load environment variables
 import { ConfigModule, ConfigService} from '@nestjs/config';
 // to load type orm and connect to postgres
@@ -9,7 +9,9 @@ import { AuthModule } from './auth/auth.module';
 import { WorkspaceModule } from './workspace/workspace.module';
 import { ProjectsModule } from './projects/projects.module';
 import { TasksModule } from './tasks/tasks.module';
-
+import { RequestIdMiddleware } from './common/middleware/request-id.middleware';
+import { ActivityLogModule } from './activity-log/activity-log.module';
+import { CommentsModule } from './comments/comments.module';
 @Module({
   imports: [
     // global config module
@@ -34,9 +36,18 @@ import { TasksModule } from './tasks/tasks.module';
     AuthModule,
     WorkspaceModule,
     ProjectsModule,
-    TasksModule
+    TasksModule,
+    ActivityLogModule,
+    CommentsModule, 
+
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(RequestIdMiddleware)
+      .forRoutes('*');
+  }
+}

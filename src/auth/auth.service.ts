@@ -5,6 +5,7 @@ import { User } from '../users/user.entity';
 import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +15,7 @@ export class AuthService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private jwtService: JwtService
-  ) {}
+  ) { }
 
   // register a new user
   // takes in data structure as per registerDTO and waits for promise to resolve with password hash 
@@ -42,7 +43,7 @@ export class AuthService {
     return result;
   }
   // validate user by email and password
-// executes when registering email and password
+  // executes when registering email and password
   async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.usersRepository.findOne({ where: { email } });
     if (user && (await bcrypt.compare(pass, user.passwordHash))) {
@@ -51,9 +52,9 @@ export class AuthService {
     }
     return null;
   }
-// executes when login route is hit 
-  async login(user: any) {
-    const payload = { email: user.email, sub: user.id };
+  // executes when login route is hit 
+  async login(user: LoginDto) {
+    const payload = { email: user.email, sub: user.password };
     return {
       access_token: this.jwtService.sign(payload),
     };

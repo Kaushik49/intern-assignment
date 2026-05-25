@@ -4,6 +4,7 @@ import { Repository, DataSource } from 'typeorm';
 import { Workspace } from './entities/workspace.entity';
 import { WorkspaceMember, WorkspaceRole } from './entities/workspace-member.entity';
 import { CreateWorkspaceDto, InviteMemberDto, UpdateRoleDto } from './dto/workspace.dto';
+import { ActivityLogService } from '../activity-log/activity-log.service';
 
 @Injectable()
 export class WorkspaceService {
@@ -13,7 +14,8 @@ export class WorkspaceService {
     @InjectRepository(WorkspaceMember)
     private memberRepository: Repository<WorkspaceMember>,
     private dataSource: DataSource,
-  ) {}
+    private activityLogService: ActivityLogService,
+  ) { }
 
   async createWorkspace(userId: string, dto: CreateWorkspaceDto): Promise<Workspace> {
     // Use a transaction to ensure both workspace and owner membership record are created successfully
@@ -27,6 +29,7 @@ export class WorkspaceService {
         role: WorkspaceRole.OWNER,
       });
       await manager.save(member);
+      await this.activityLogService.log(userId, 'WORKSPACE_CREATED', `Created workspace ${savedWorkspace.name}`);
 
       return savedWorkspace;
     });
