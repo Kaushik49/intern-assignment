@@ -21,6 +21,16 @@ export class ActivityLogService {
     return this.repo.find({ order: { timestamp: 'DESC' } });
   }
 
+  async log(userId: string, action: string, description: string): Promise<ActivityLog> {
+    return this.create({
+      userId,
+      action,
+      entity: action,
+      entityId: userId,
+      metadata: { description },
+    });
+  }
+
   async findOne(id: string): Promise<ActivityLog> {
     const log = await this.repo.findOne({ where: { id } });
     if (!log) throw new NotFoundException('Log entry not found');

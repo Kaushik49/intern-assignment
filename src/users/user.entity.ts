@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from 'typeorm';
-import { Workspace } from 'src/workspace/entities/workspace.entity';
-import { Project } from 'src/projects/project.entity';
-import { Task } from 'src/tasks/task.entity';
+import { Workspace } from '../workspace/entities/workspace.entity';
+import { Project } from '../projects/project.entity';
+import { Task } from '../tasks/task.entity';
 // schema for users table
 @Entity('users')
 export class User {

@@ -7,13 +7,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Task, TaskStatus, STATUS_TRANSITIONS } from './task.entity';
 import { Project } from '../projects/project.entity';
+import { ActivityLogService } from '../activity-log/activity-log.service';
 
 @Injectable()
 export class TasksService {
   constructor(
     @InjectRepository(Task) private readonly taskRepo: Repository<Task>,
     @InjectRepository(Project) private readonly projectRepo: Repository<Project>,
-  ) {}
+    private activityLogService: ActivityLogService,
+  ) { }
 
   private async verifyProjectOwnership(projectId: string, userId: string): Promise<Project> {
     const project = await this.projectRepo.findOneBy({ id: projectId });
@@ -28,7 +30,9 @@ export class TasksService {
       title, description, project_id: projectId,
       assignee_id: assigneeId,
     });
-    return this.taskRepo.save(task);
+    await this.taskRepo.save(task);
+    await this.activityLogService.log(userId, 'TASK_CREATED', `Created task ${task.id}`);
+    return task;
   }
 
   async findAll(userId: string, projectId: string) {

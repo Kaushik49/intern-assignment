@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Comment } from './comment.entity';
+import { Comment } from './entities/comment.entity';
 import { Task } from '../tasks/task.entity';
 import { ActivityLogService } from '../activity-log/activity-log.service';
 

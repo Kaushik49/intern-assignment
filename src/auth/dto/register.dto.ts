@@ -10,8 +10,4 @@ export class RegisterDto {
   @IsString()
   @MinLength(6)
   password: string;
-
-  @ApiProperty({ example: 'John Doe', description: 'The full name of the user' })
-  @IsString()
-  name: string;
 }

@@ -50,7 +50,7 @@ export class Task {
   assignee: User;
 
   @Column({ nullable: true })
-  assignee_id: string;
+  assignee_id: string | null;
 
   @CreateDateColumn()
   createdAt: Date;

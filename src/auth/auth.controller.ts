@@ -33,9 +33,9 @@ export class AuthController {
   @ApiBody({ type: LoginDto })
   @ApiResponse({ status: 200, description: 'Successfully authenticated.' })
   @ApiResponse({ status: 401, description: 'Unauthorized.' })
-  async login(@Body() loginDto: LoginDto) {
-    // executes the authservice login in authservice.ts
-    return this.authService.login(loginDto);
+  async login(@Request() req) {
+    // LocalAuthGuard validates credentials and attaches user to req.user
+    return this.authService.login(req.user);
   }
 
   // jwt auth garuds imported from jwt-auth.guard.ts 
