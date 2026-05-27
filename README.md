@@ -1,98 +1,114 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Internship Technical Assessment — NestJS Backend Application
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This repository contains the backend starter application for the technical assessment / internship project. It is built using the [NestJS](https://nestjs.com/) framework and is pre-configured with a database connection manager, testing suites, and strict linting guidelines to evaluate development proficiency.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 🛠️ Tech Stack & Tools
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+* **Backend Framework**: [NestJS](https://docs.nestjs.com/) (TypeScript-first Node.js framework)
+* **Database Layer**: [TypeORM](https://typeorm.io) (via `data-source.ts`) for Object-Relational Mapping
+* **Language**: TypeScript (98.9%)
+* **Code Quality**: [ESLint](https://eslint.org) and [Prettier](https://prettier.io) for unified code styling
 
-## Project setup
+---
 
-```bash
-$ npm install
+## 📁 Repository Structure
+
+```text
+├── src/                  # Main application source code
+│   ├── app.module.ts     # Root module of the application
+│   └── main.ts           # Entry point to bootstrap the server
+├── test/                 # End-to-end (e2e) and integration tests
+├── data-source.ts        # TypeORM data source configuration & migrations setup
+├── eslint.config.mjs     # Strict code formatting and linting rules
+├── .prettierrc           # Prettier rules configuration
+├── nest-cli.json         # NestJS CLI configuration guidelines
+└── tsconfig.json         # TypeScript compiler configurations
 ```
 
-## Compile and run the project
+---
 
+## 🚀 Getting Started
+
+### 1. Prerequisites
+Ensure you have the following installed on your local machine:
+* [Node.js](https://nodejs.org) (v18 or higher recommended)
+* [NPM](https://npmjs.com) (bundled with Node)
+
+### 2. Installation
+Clone the repository and install the project dependencies:
 ```bash
-# development
+git clone https://github.com
+cd intern-assignment
+npm install
+```
+
+### 3. Environment Setup
+Create a `.env` file in the root directory and configure your database variables required by `data-source.ts`:
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=your_db_username
+DB_PASSWORD=your_db_password
+DB_NAME=your_db_name
+PORT=3000
+```
+
+---
+
+## 💻 CLI Commands
+
+### Application Execution
+Run the development server with hot-reloading active:
+```bash
+# Development mode
 $ npm run start
 
-# watch mode
+# Watch mode (Recommended for development)
 $ npm run start:dev
 
-# production mode
+# Production build mode
 $ npm run start:prod
 ```
 
-## Run tests
-
+### Database Migrations (TypeORM)
+If database changes or migrations are needed, use these commands via the TypeORM CLI:
 ```bash
-# unit tests
+# Generate a migration file
+$ npx typeorm-ts-node-commonjs migration:generate src/migrations/MigrationName -d data-source.ts
+
+# Run pending migrations
+$ npx typeorm-ts-node-commonjs migration:run -d data-source.ts
+```
+
+### Automated Testing
+Execute the pre-configured test suites:
+```bash
+# Run unit tests
 $ npm run test
 
-# e2e tests
+# Run end-to-end (e2e) tests
 $ npm run test:e2e
 
-# test coverage
+# Check code coverage
 $ npm run test:cov
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+### Code Formatting & Quality
+Ensure your code adheres to code quality guidelines before pushing changes:
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Lint code structure
+$ npm run lint
+
+# Format code with Prettier
+$ npx prettier --write "src/**/*.ts"
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+## 📝 Submission Evaluation Rules
 
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+1. **Clean Code**: Follow NestJS modular design patterns (Controllers, Services, Modules).
+2. **Type Safety**: Avoid using `any`; explicitly define interfaces, DTOs, and entity models.
+3. **Database Integration**: Handle relational transactions efficiently via the designated TypeORM data-source.
