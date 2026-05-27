@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { WorkspaceMember } from './workspace-member.entity';
 
+// database schema for workspace
 @Entity('workspaces')
 export class Workspace {
     @PrimaryGeneratedColumn('uuid')

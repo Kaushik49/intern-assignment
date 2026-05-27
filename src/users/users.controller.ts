@@ -7,7 +7,7 @@ import { UsersService } from './users.service';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-
+// get decorator to get user profile
   @Get('me')
   @ApiOperation({ summary: 'Get current user profile' })
   @ApiResponse({ status: 200, description: 'Profile retrieved successfully.' })
@@ -15,7 +15,7 @@ export class UsersController {
     // Assumes your AuthGuard attaches the user object to the request
     return req.user; 
   }
-
+// patch decorator to update user profile
   @Patch('me')
   @ApiOperation({ summary: 'Update current user profile' })
   @ApiResponse({ status: 200, description: 'Profile updated successfully.' })

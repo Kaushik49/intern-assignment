@@ -20,7 +20,7 @@ export class ActivityLogService {
   async findAll(): Promise<ActivityLog[]> {
     return this.repo.find({ order: { timestamp: 'DESC' } });
   }
-
+// log action for any activity saved into the database
   async log(userId: string, action: string, description: string): Promise<ActivityLog> {
     return this.create({
       userId,

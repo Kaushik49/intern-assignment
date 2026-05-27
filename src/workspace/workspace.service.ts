@@ -9,11 +9,12 @@ import { ActivityLogService } from '../activity-log/activity-log.service';
 @Injectable()
 export class WorkspaceService {
   constructor(
+    // inject repository injects the orm in service / business logic
     @InjectRepository(Workspace)
     private workspaceRepository: Repository<Workspace>,
     @InjectRepository(WorkspaceMember)
     private memberRepository: Repository<WorkspaceMember>,
-    private dataSource: DataSource,
+    private dataSource: DataSource, // transaction for multiple database operation
     private activityLogService: ActivityLogService,
   ) { }
 
@@ -34,7 +35,7 @@ export class WorkspaceService {
       return savedWorkspace;
     });
   }
-
+// invite member in a workspace
   async inviteMember(workspaceId: string, dto: InviteMemberDto): Promise<WorkspaceMember> {
     const existing = await this.memberRepository.findOne({
       where: { workspaceId, userId: dto.userId },
@@ -48,7 +49,7 @@ export class WorkspaceService {
     });
     return this.memberRepository.save(newMember);
   }
-
+// update a member in a workspace
   async updateMemberRole(workspaceId: string, memberId: string, dto: UpdateRoleDto): Promise<WorkspaceMember> {
     const member = await this.memberRepository.findOne({
       where: { workspaceId, userId: memberId },
@@ -58,7 +59,7 @@ export class WorkspaceService {
     member.role = dto.role;
     return this.memberRepository.save(member);
   }
-
+// to remove member in a workspace
   async removeMember(workspaceId: string, memberId: string): Promise<{ message: string }> {
     const result = await this.memberRepository.delete({ workspaceId, userId: memberId });
     if (result.affected === 0) throw new NotFoundException('Member not found in this workspace');

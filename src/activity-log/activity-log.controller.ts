@@ -3,6 +3,7 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ActivityLogService } from './activity-log.service';
 import { ActivityLog } from './activity-log.entity';
 
+// api tags decorator
 @ApiTags('Activity Logs')
 @Controller('activity-logs')
 export class ActivityLogController {
@@ -16,7 +17,9 @@ export class ActivityLogController {
   }
 
   @Get(':id')
+  // api operation decorator is for the swagger to show the description of the api
   @ApiOperation({ summary: 'Get a specific log entry' })
+  // api response decorator is for the swagger to show the response of the api
   @ApiResponse({ status: 200, description: 'Return single log.', type: ActivityLog })
   @ApiResponse({ status: 404, description: 'Log not found.' })
   async findOne(@Param('id') id: string) {
